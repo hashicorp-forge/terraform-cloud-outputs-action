@@ -1,8 +1,23 @@
-name: Example Typescript Action
+# Copyright (c) HashiCorp, Inc.
+# SPDX-License-Identifier: MPL-2.0
+
+name: Terraform Cloud Outputs
 runs:
   using: 'node16'
   main: 'dist/index.js'
 inputs:
-  motd:
-    description: An example input
-    default: 'Hello, World!'
+  hostname:
+    required: false
+    default: 'app.terraform.io'
+  token:
+    description: "The Terraform Cloud/Terraform Enterprise access token"
+    required: true
+  organization:
+    description: "The Terraform Cloud/Terraform Enterprise organization that owns the specified workspace"
+    required: true
+  workspace:
+    description: "The Terraform Cloud/Terraform Enterprise workspace to fetch outputs from"
+    required: true
+outputs:
+  workspace-outputs-json:
+    description: "The current workspace outputs, expressed as a JSON string. Use fromJSON to decode."

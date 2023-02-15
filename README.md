@@ -1,34 +1,66 @@
-# Template Typescript Action
+# terraform-cloud-outputs-action
 
-A template repository for building javascript github actions in Typescript. Here is the tooling setup:
+## Overview
 
-- [@vercel/ncc](https://github.com/vercel/ncc) compiles typescript to a single file
-- ts-jest testing
-- prettier formatting
-- CI checks
-- pre-commit protections
+A GitHub Action step that fetches outputs from a terraform cloud workspace.
 
-## Install
+### Inputs
 
-`npm install`
-`npm prepare`
+- `token` (**Required**): The token of the TFC/E instance which holds the workspace that manages your tflocal instance.
+- `organization` (**Required**): The TFC/E organization that manages the specified workspace.
+- `workspace` (**Required**): The name of the TFC/E workspace that manages the tflocal configuration.
+- `hostname` (**Optional**): The hostname of the TFC/E instance which holds the workspace that manages your tflocal instance. Defaults to `app.terraform.io`.
 
-## Run Tests
+[Read more about the Runs API](https://developer.hashicorp.com/terraform/cloud-docs/api-docs/run#create-a-run)
 
-`npm run test`
+### Outputs
 
----
+- `workspace-outputs-json`: A JSON-stringified object containing the outputs fetched from the specified Terraform Cloud workspace. Output names will match those found in your workspace. Sensitive output values will be redacted from runner logs.
 
-Example README for Actions follows
+**Example**
 
----
+`'{"example-list":["list", "of", "strings"],"aws_access_key_id":"ABCD1234","aws_secret_access_key":"ZYXW00+ABCD1234"}'`
 
-# Template Typescript Action
+You will need to use `fromJSON()` to parse `workspace-outputs-json` in your workflow. [Read more about fromJSON()](https://docs.github.com/en/actions/learn-github-actions/expressions#fromjson)
 
-This action logs a phrase given as input
+```yaml
+env:
+  AWS_ACCESS_KEY_ID: ${{ fromJSON(steps.terraform-cloud-run.outputs.workspace-outputs).aws_access_key_id }}
+  AWS_SECRET_ACCESS_KEY: ${{ fromJSON(steps.terraform-cloud-run.outputs.workspace-outputs).aws_secret_access_key }}
+```
 
-## Inputs
+Workspace outputs that are marked as sensitive will be set as secret and redacted in the workflow.
 
-### `motd`
+## Examples
 
-**Optional** The phrase to log
+```yaml
+name: Nightly Test
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: 0 0 * * *
+
+jobs:
+  instance:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Fetch infra secrets
+        id: fetch
+        uses: brandonc/terraform-cloud-outputs-action
+        with:
+          token: ${{ secrets.TFC_TOKEN }}
+          organization: "example-org"
+          workspace: "my-tflocal-workspace"
+      - name: Tests
+        run: go test ./...
+        env:
+          SOME_FOO: ${{ fromJSON(steps.fetch.outputs.workspace-outputs-json).foo }}
+          SOME_BAR: ${{ fromJSON(steps.fetch.outputs.workspace-outputs-json).bar }}
+```
+
+
+
+
