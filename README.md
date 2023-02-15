@@ -49,7 +49,7 @@ jobs:
 
       - name: Fetch infra secrets
         id: fetch
-        uses: brandonc/terraform-cloud-outputs-action
+        uses: brandonc/terraform-cloud-outputs-action@v1
         with:
           token: ${{ secrets.TFC_TOKEN }}
           organization: "example-org"
@@ -60,7 +60,3 @@ jobs:
           SOME_FOO: ${{ fromJSON(steps.fetch.outputs.workspace-outputs-json).foo }}
           SOME_BAR: ${{ fromJSON(steps.fetch.outputs.workspace-outputs-json).bar }}
 ```
-
-
-
-
