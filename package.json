@@ -1,7 +1,7 @@
 {
   "name": "terraform-cloud-outputs-action",
   "version": "0.1.0",
-  "description": "A GitHub Action step that fetches outputs from a terraform cloud workspace",
+  "description": "A GitHub Action that fetches outputs from a Terraform Cloud workspace",
   "main": "dist/index.js",
   "scripts": {
     "build": "ncc build src/action.ts -o dist --license licenses.txt",

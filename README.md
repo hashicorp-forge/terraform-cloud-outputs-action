@@ -2,7 +2,7 @@
 
 ## Overview
 
-A GitHub Action step that fetches outputs from a terraform cloud workspace.
+A GitHub Action step that fetches outputs from a Terraform Cloud workspace.
 
 ### Inputs
 
@@ -11,13 +11,11 @@ A GitHub Action step that fetches outputs from a terraform cloud workspace.
 - `workspace` (**Required**): The name of the TFC/E workspace that manages the tflocal configuration.
 - `hostname` (**Optional**): The hostname of the TFC/E instance which holds the workspace that manages your tflocal instance. Defaults to `app.terraform.io`.
 
-[Read more about the Runs API](https://developer.hashicorp.com/terraform/cloud-docs/api-docs/run#create-a-run)
-
 ### Outputs
 
 - `workspace-outputs-json`: A JSON-stringified object containing the outputs fetched from the specified Terraform Cloud workspace. Output names will match those found in your workspace. Sensitive output values will be redacted from runner logs.
 
-**Example**
+**Example Output Value**
 
 `'{"example-list":["list", "of", "strings"],"aws_access_key_id":"ABCD1234","aws_secret_access_key":"ZYXW00+ABCD1234"}'`
 
