@@ -6,10 +6,10 @@ A GitHub Action step that fetches outputs from a Terraform Cloud workspace.
 
 ### Inputs
 
-- `token` (**Required**): The token of the TFC/E instance which holds the workspace that manages your tflocal instance.
-- `organization` (**Required**): The TFC/E organization that manages the specified workspace.
-- `workspace` (**Required**): The name of the TFC/E workspace that manages the tflocal configuration.
-- `hostname` (**Optional**): The hostname of the TFC/E instance which holds the workspace that manages your tflocal instance. Defaults to `app.terraform.io`.
+- `token` (**Required**): Terraform Cloud API access token
+- `organization` (**Required**): The organization
+- `workspace` (**Required**): The name of the workspace
+- `hostname` (**Optional**): The hostname (if not using Terraform Cloud) of the Terraform Enterprise instance. Defaults to `app.terraform.io`
 
 ### Outputs
 
@@ -47,7 +47,7 @@ jobs:
 
       - name: Fetch infra secrets
         id: fetch
-        uses: brandonc/terraform-cloud-outputs-action@v1
+        uses: hashicorp-forge/terraform-cloud-outputs-action@v1
         with:
           token: ${{ secrets.TFC_TOKEN }}
           organization: "example-org"
