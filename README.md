@@ -1,5 +1,9 @@
 # terraform-cloud-outputs-action
 
+# ⚠️ IMPORTANT
+
+This repo has been archived. New features and bug fixes will be added to [hashicorp-forge/terraform-cloud-action](https://github.com/hashicorp-forge/terraform-cloud-action), which contains several Terraform Cloud actions that are better organized and easier to maintain.
+
 ## Overview
 
 A GitHub Action step that fetches outputs from a Terraform Cloud workspace.
